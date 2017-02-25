@@ -1,0 +1,28 @@
+{
+  "name": "chitcha",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "engines": {
+    "node": "6.10.0"
+  },
+  "scripts": {
+    "start": "node server/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andstor/chitcha.git"
+  },
+  "keywords": [
+    "realtime"
+  ],
+  "author": "André Storhaug",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/andstor/chitcha/issues"
+  },
+  "homepage": "https://github.com/andstor/chitcha#readme",
+  "dependencies": {
+    "ws": "^2.1.0"
+  }
+}
