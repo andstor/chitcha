@@ -1,3 +1,8 @@
+"strict mode";
+
+// Optional. You will see this name in eg. 'ps' or 'top' command
+process.title = 'chitcha';
+
 // Imort needed modules
 var http = require('http');
 var Duplex = require('stream').Duplex;
@@ -20,59 +25,84 @@ server.listen(port, function() {
 });
 
 
-var sockets = [];
+/**
+ * Global variables
+ */
+// latest 100 messages
+var history = [ ];
+// list of currently connected clients (users)
+var clients = [ ];
 
-wss.on('connection', function connection(client) {
+/**
+ * Helper function for escaping input strings
+ */
+ function htmlEntities(str) {
+     return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;')
+                       .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+ }
+
+wss.on('connection', function(client) {
+    console.log(new Date());
+
     var id = client.upgradeReq.headers['sec-websocket-key'];
     console.log('New Connection id :: ', id);
     //client.send(id);
 
-    var stream = new Duplex({
-        objectMode: true
-    });
+ var index = clients.push(client) - 1;
+    var userName = false;
 
-    stream._write = function(chunk, encoding, callback) {
-        console.log('s->c', chunk);
-        client.send(JSON.stringify(chunk));
-        return callback();
-    };
-
-    stream._read = function() {}; // Ignore. You can't control the information, man!
-
-    stream.headers = client.upgradeReq.headers;
-
-    stream.remoteAddress = client.upgradeReq.connection.remoteAddress;
+    // send back chat history
+    if (history.length > 0) {
+        connection.sendUTF(JSON.stringify({
+            type: 'history',
+            data: history
+        }));
+    }
 
     client.on('message', function incoming(data) {
-        console.log('c->s ', data);
-        return stream.push(JSON.parse(data));
-    });
+        if (userName === false) { // first message sent by user is their name
+            // remember user name
+            userName = htmlEntities(data);
+            console.log((new Date()) + ' User is known as: ' + userName);
 
-    stream.on('error', function(msg) {
-        return client.close(msg);
+        } else { // log and broadcast the message
+            console.log((new Date()) + ' Received Message from ' +
+                userName + ': ' + data);
+
+            // we want to keep history of all sent messages
+            var messageObj = {
+                time: (new Date()).getTime(),
+                text: htmlEntities(data),
+                author: userName
+            };
+            history.push(messageObj);
+            history = history.slice(-100);
+
+            // broadcast message to all connected clients
+            var json = JSON.stringify({ type:'message', data: messageObj });
+            for (var i=0; i < clients.length; i++) {
+                clients[i].send(json);
+}
+            //clients[data.to].send(data.message);
+        }
     });
 
     client.on('close', function(reason) {
         var id = client.upgradeReq.headers['sec-websocket-key'];
-        console.log('Closing :: %d \n Reason :: %s', id, reason);
-
-        stream.push('null');
-        stream.emit('close');
-        console.log('client went away');
-        return client.close(reason);
+        console.log('Closing :: %s' + '\n' + 'Reason :: %s', id, reason);
     });
 
-    stream.on('end', function() {
-        client.close();
-    });
-
-
-    sockets[id] = client;
-    // ... and give the stream to ShareJS.
-    //return share.listen(stream)
+    //clients.push = client;
 });
 
 
+//send message to all clients
+function broadcast(msg) {
+    for (var i = 0; i < clients.length; i++) {
+        client = clients[i];
+        client.send(msg);
+    }
+}
 
 
 
