@@ -2,47 +2,39 @@
 <html>
 
 <head>
+    <meta charset="utf-8">
     <title>Websocket test page</title>
+
+    <script src="js/main.js"></script>
+    
+    <link href="css/main.css" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet" type="text/css">
+
 </head>
 
 <body>
-    <input id="entry" value="test">
-    <button id="send">Send</button>
-    <pre id="log"></pre>
 
-    <script>
-        var HOST = location.origin.replace(/^http/, 'ws');
-        var ws = new WebSocket(HOST);
-        // Log a message when connection is successful.
-        ws.onopen = function() {
-            log('Connected to server');
-        };
 
-        document.getElementById('send').onclick = function() {
-            //            var msgSend = document.getElementById('entry').value;
-            //            log("Browser sends: " + msgSend);
-            //            Once user's input is received, we send it to the server.
-            //            ws.send(msgSend);
+    <div class="container">
+        <div class="sidebar">
+            a </div>
+        <div class="wrap">
+            <div class="content">
+                This is a simple cat based on node.js
+                <pre id="log"></pre>
 
-            var data = {
-                to: "sec-websocket-identifier",
-                message: 'hello from client 1'
-            };
-            data.to = document.getElementById('entry').value;
-            ws.send(JSON.stringify(data));
-        };
+                <br>
+                <div class="msgs_board">
 
-        // When a message from server is received, we display it on the screen.
-        ws.onmessage = function(evt) {
-            var msgReceived = evt.data;
-            log("Websocket server responds: " + msgReceived);
-        };
+                </div>
+                <div class="msgs_input">
+                    <textarea id="entry" name="name" rows="1" cols="10">ssss</textarea>
+                    <button id="send">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        // As soon as the connection is closed, we inform the user.
-        ws.onclose = function() {
-            log('Disconnected from server');
-        };
-    </script>
 </body>
 
 </html>

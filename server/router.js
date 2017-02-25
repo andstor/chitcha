@@ -27,7 +27,7 @@ var actions = {
                 if (err) return callback(err);
 
                 data = content;
-                console.log(__dirname);
+                console.log(__dirname + req.url);
                 callback(null, content);
             });
         }
