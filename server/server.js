@@ -48,12 +48,12 @@ wss.on('connection', function(client) {
     console.log('New Connection id :: ', id);
     //client.send(id);
 
- var index = clients.push(client) - 1;
+    var index = clients.push(client) - 1;
     var userName = false;
 
     // send back chat history
     if (history.length > 0) {
-        connection.sendUTF(JSON.stringify({
+        client.send(JSON.stringify({
             type: 'history',
             data: history
         }));
@@ -64,6 +64,8 @@ wss.on('connection', function(client) {
             // remember user name
             userName = htmlEntities(data);
             console.log((new Date()) + ' User is known as: ' + userName);
+
+              client.send(JSON.stringify({ type:'init', data: userName }));
 
         } else { // log and broadcast the message
             console.log((new Date()) + ' Received Message from ' +

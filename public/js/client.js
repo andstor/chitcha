@@ -19,7 +19,6 @@ function messageHandling() {
     }
 
 
-
     var HOST = location.origin.replace(/^http/, 'ws');
     var ws = new WebSocket(HOST);
     // Log a message when connection is successful.
@@ -42,7 +41,7 @@ function messageHandling() {
     // When a message from server is received, we display it on the screen.
     ws.onmessage = function(message) {
         var msgReceived = message.data;
-        log("Websocket server responds: " + msgReceived);
+        console.log("Websocket server responds: " + msgReceived);
 
         // try to parse JSON message. Because we know that the server always returns
         // JSON this should work without any problem but we should make sure that
@@ -55,17 +54,19 @@ function messageHandling() {
             console.log('This doesn\'t look like a valid JSON: ', message.data);
             return;
         }
+        if (json.type === 'init') {
+            $('#input').removeAttr('disabled').focus();
+            // from now user can start sending messages
+            $('#input').attr('placeholder', 'Message');
 
-        if (json.type === 'history') { // entire message history
+        } else if (json.type === 'history') { // entire message history
             // insert every single message to the chat window
             for (var i = 0; i < json.data.length; i++) {
-                addMessage(json.data[i].author, json.data[i].text,
-                    json.data[i].color, new Date(json.data[i].time));
+                addMessage(json.data[i].author, json.data[i].text, new Date(json.data[i].time));
             }
         } else if (json.type === 'message') { // it's a single message
             $('#input').removeAttr('disabled'); // let the user write another message
-            addMessage(json.data.author, json.data.text,
-                json.data.color, new Date(json.data.time));
+            addMessage(json.data.author, json.data.text, new Date(json.data.time));
         } else {
             console.log('Hmm..., I\'ve never seen JSON like this: ', json);
         }
@@ -84,7 +85,7 @@ function messageHandling() {
      * Send mesage when user presses Enter key
 
      */
-
+/*
     document.getElementById('send').onclick = function() {
         //            var msgSend = document.getElementById('entry').value;
         //            log("Browser sends: " + msgSend);
@@ -97,13 +98,15 @@ function messageHandling() {
         };
         data.to = document.getElementById('input').value;
         ws.send(JSON.stringify(data));
-    };
+    };*/
 
 
 
-    $('textarea').keyup(function(e) {
-        console.log("lol");
+    $('textarea').keydown(function(e) {
+
         if (e.keyCode === 13 && !e.shiftKey) {
+            e.preventDefault();
+
             var msg = $(this).val();
             if (!msg) {
                 return;
@@ -136,9 +139,33 @@ function messageHandling() {
 
 
 
+    /**
+     * This method is optional. If the server wasn't able to respond to the
+     * in 3 seconds then show some error message to notify the user that
+     * something is wrong.
+     */
+    setInterval(function() {
+        if (ws.readyState !== 1) {
+            $('#input').attr('placeholder', 'Error');
+            $('#input').attr('disabled', 'disabled').val('Unable to comminucate ' +
+                'with the WebSocket server.');
+        }
+    }, 3000);
+
+    /**
+     * Add message to the chat window
+     */
+    function addMessage(author, message, dt) {
+        $('#msgs_board').append('<div class="message_content">' + '<b class="author">' + ' @ ' + author + '</b>' + ' ' + '<div class="timestamp">' + (dt.getHours() < 10 ? '0' + dt.getHours() : dt.getHours()) + ':' +
+            (dt.getMinutes() < 10 ? '0' + dt.getMinutes() : dt.getMinutes()) + '</div>' + '<br/> ' + message + '</div>');
+    updateScroll();
+    }
 
 
-
+    function updateScroll(){
+        var element = document.getElementById("msgs_board");
+        element.scrollTop = element.scrollHeight;
+    }
 
 
 
