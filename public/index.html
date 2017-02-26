@@ -5,8 +5,9 @@
     <meta charset="utf-8">
     <title>Websocket test page</title>
 
-    <script src="js/main.js"></script>
-    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="js/client.js"></script>
+
     <link href="css/main.css" rel="stylesheet" type="text/css">
     <link href="http://fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet" type="text/css">
 
@@ -20,16 +21,14 @@
             a </div>
         <div class="wrap">
             <div class="content">
-                This is a simple cat based on node.js
-                <pre id="log"></pre>
-
-                <br>
-                <div class="msgs_board">
+                <div class="header">
+                  This is a simple chat based on node.js
+                </div>
+                <div id="msgs_board">
 
                 </div>
                 <div class="msgs_input">
-                    <textarea id="entry" name="name" rows="1" cols="10">ssss</textarea>
-                    <button id="send">Send</button>
+                    <textarea id="input" name="name" rows="1" cols="10" disabled="disabled" placeholder="Message"></textarea>
                 </div>
             </div>
         </div>
