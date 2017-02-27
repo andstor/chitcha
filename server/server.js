@@ -92,6 +92,7 @@ wss.on('connection', function(client) {
     client.on('close', function(reason) {
         var id = client.upgradeReq.headers['sec-websocket-key'];
         console.log('Closing :: %s' + '\n' + 'Reason :: %s', id, reason);
+        clients.splice(index, 1);
     });
 
     //clients.push = client;
