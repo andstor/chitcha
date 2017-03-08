@@ -50,6 +50,8 @@ function messageHandling() {
 
         try {
             json = JSON.parse(message.data);
+            console.log(json);
+
         } catch (e) {
             console.log('This doesn\'t look like a valid JSON: ', message.data);
             return;
@@ -59,6 +61,11 @@ function messageHandling() {
             // from now user can start sending messages
             $('#input').attr('placeholder', 'Message');
 
+            document.getElementById('username').innerHTML = "@" + json.data + " <span class='light_text'>(you)</span>"; // Show the username
+
+        } else if (json.type === 'clientsList') {
+            console.log(json.data);
+            
         } else if (json.type === 'history') { // entire message history
             // insert every single message to the chat window
             for (var i = 0; i < json.data.length; i++) {
@@ -85,20 +92,20 @@ function messageHandling() {
      * Send mesage when user presses Enter key
 
      */
-/*
-    document.getElementById('send').onclick = function() {
-        //            var msgSend = document.getElementById('entry').value;
-        //            log("Browser sends: " + msgSend);
-        //            Once user's input is received, we send it to the server.
-        //            ws.send(msgSend);
+    /*
+        document.getElementById('send').onclick = function() {
+            //            var msgSend = document.getElementById('entry').value;
+            //            log("Browser sends: " + msgSend);
+            //            Once user's input is received, we send it to the server.
+            //            ws.send(msgSend);
 
-        var data = {
-            to: "sec-websocket-identifier",
-            message: 'hello from client 1'
-        };
-        data.to = document.getElementById('input').value;
-        ws.send(JSON.stringify(data));
-    };*/
+            var data = {
+                to: "sec-websocket-identifier",
+                message: 'hello from client 1'
+            };
+            data.to = document.getElementById('input').value;
+            ws.send(JSON.stringify(data));
+        };*/
 
 
 
@@ -156,13 +163,13 @@ function messageHandling() {
      * Add message to the chat window
      */
     function addMessage(author, message, dt) {
-        $('#msgs_board').append('<div class="message_content">' + '<b class="author">' + ' @ ' + author + '</b>' + ' ' + '<div class="timestamp">' + (dt.getHours() < 10 ? '0' + dt.getHours() : dt.getHours()) + ':' +
+        $('#msgs_board').append('<div class="message_content">' + '<b class="author">' + author + '</b>' + ' ' + '<div class="timestamp">' + (dt.getHours() < 10 ? '0' + dt.getHours() : dt.getHours()) + ':' +
             (dt.getMinutes() < 10 ? '0' + dt.getMinutes() : dt.getMinutes()) + '</div>' + '<br/> ' + message + '</div>');
-    updateScroll();
+        updateScroll();
     }
 
 
-    function updateScroll(){
+    function updateScroll() {
         var element = document.getElementById("msgs_board");
         element.scrollTop = element.scrollHeight;
     }

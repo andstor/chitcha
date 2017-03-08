@@ -1,6 +1,7 @@
 var path = require('path');
 var url = require('url');
 var fs = require('fs');
+var querystring = require('querystring');
 var utils = require('./http-utils');
 
 var actions = {
@@ -8,9 +9,17 @@ var actions = {
     // Handle GET requests from client
     'GET': function(req, res) {
         // if your router needs to pattern-match endpoints
-        //var parsedUrl  = url.parse(req.url);
-        //var endPoint   = parsedUrl.pathname === '/' ? '/index.html' : parsedUrl.pathname;
+        var parsedUrl  = url.parse(req.url, true);
+        var endPoint   = parsedUrl.pathname === '/' ? '/index.html' : parsedUrl.pathname;
 
+        console.log(parsedUrl);
+        console.log(endPoint);
+
+        /*
+        else if(req.method=='GET') {
+                var url_parts = url.parse(req.url,true);
+                console.log(url_parts.query);
+            }*/
         /*
          * DO SOMETHING - get asset, query database, etc. -> store as `data`
          * pass the result of that operation as data into responder -> store result status code as `statusCode`
@@ -47,6 +56,13 @@ var actions = {
             // either redirect or respond
             // should be based on result of the operation performed in response to the POST request intent
             // e.g., if user wants to save, and save fails, throw error
+            if (req.url === "/inbound") {
+
+              console.log("POST method is working!!!");
+
+            } else {
+              utils.send404(res);
+            }
             utils.redirector(res /* redirect path , optional status code -  defaults to 302 */ );
         });
     }

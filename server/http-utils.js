@@ -15,6 +15,7 @@ exports.setHeaderCType = function(url) {
         ".js": "application/js",
         ".jpg": "image/jpg",
         ".png": "image/png",
+        ".ico": "image/x-icon",
         ".svg": "image/svg+xml",
         ".MP3": "audio/mpeg"
     };
@@ -36,7 +37,12 @@ exports.setHeaderCType = function(url) {
 exports.prepareResponse = function(req, cb) {
     var data = "";
     req.on('data', function(chunk) {
-        data += chunk;
+
+        // Too much POST data, kill the connection!
+        // 1e6 === 1 * Math.pow(10, 6) === 1 * 1000000 ~~~ 1MB
+        if (requestBody.length > 1e7) {
+            data += chunk;
+        }
     });
     req.on('end', function() {
         cb(data);
