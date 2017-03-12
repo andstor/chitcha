@@ -1,0 +1,72 @@
+.absolute-Center {
+  margin: auto;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+}
+
+.row {
+    width: 532px;
+    height: 434px;
+    margin: auto;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+}
+.col-left {
+    float: left;
+    width: 256px;
+    padding: 0 15px;
+    font-size: 14px;
+    line-height: 1.43;
+}
+
+.col-middle {
+  vertical-align: middle;
+}
+
+.col-right {
+    float: right;
+    width: 41.66667%;
+    padding: 0 12px;
+}
+
+.text-jumbo {
+    font-size: 70px;
+    font-weight: 700;
+}
+
+h1 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    margin-left: -3px;
+    line-height: 1;
+}
+
+h2 {
+    font-weight: 600;
+    font-size: 32px;
+    margin-top: 25px;
+    margin-bottom: 15px;
+    line-height: 1.25;
+}
+
+h6 {
+    color: #767676;
+    font-weight: 900;
+    font-size: 14px;
+    margin-top: 25px;
+    margin-bottom: 15px
+}
+
+a {
+    color: #008489;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #008489;
+    text-decoration: underline;
+}
+
+a:focus {
+    outline: 5px auto -webkit-focus-ring-color;
+}

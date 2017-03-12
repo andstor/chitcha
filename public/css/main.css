@@ -3,7 +3,8 @@ body {
     font-family: Lato, appleLogo, sans-serif;
     line-height: 1.5rem;
     font-size: 1.1rem;
-    color: #444;
+    color: #484848;
+    -webkit-font-smoothing: antialiased;
     /*overflow: hidden;*/
 }
 
@@ -49,25 +50,67 @@ body {
     color: #fff;
 }
 
-#clientsList {
-    color: #fff;
-    width: calc(100% - 40px);
-    margin: auto;
+.channel-head {
+    margin-left: 15px;
+}
+
+#all-channels {
+    color: #AB9BA9;
+    width: 100%;
     font-size: .9375rem;
     line-height: 1.375rem;
+    float: left;
 }
 
-#clientsList ul {
-    list-style-type: circle;
+#all-channels ul {
+    list-style-type: disc;
+    margin: 0px;
+    padding: 0;
 }
 
-#clientsList ul #active {
-  list-style-type: disc;
-
+#all-channels ul li {
+    padding-left: 32px;
 }
 
-.active {
+#all-channels ul li:hover {
+    background-color: #3e313c;
+}
+
+#all-channels li:not(.active)>a:hover {
+    color: inherit;
+    background-color: #3e313c;
+    text-decoration: underline;
+}
+
+#all-channels .active {
+    list-style-type: disc;
+    color: #fff;
     background-color: #4c9689;
+}
+
+#all-channels .active:hover {
+    list-style-type: disc;
+    color: #fff;
+    background-color: #4c9689;
+}
+
+#all-channels a {
+    color: inherit;
+    display: block;
+    height: 1.5rem;
+    padding: 0;
+    border-top-right-radius: .25rem;
+    border-bottom-right-radius: .25rem;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    background-clip: padding-box;
+    text-decoration: none !important;
+    width: 100%;
+    text-align: left;
+}
+
+.ts-icon {
+    content: '\E507';
 }
 
 .light_text {
@@ -105,6 +148,11 @@ body {
 
 .msgs_input {
     margin: 0 1.25rem 0 1.25rem;
+}
+
+.list-unstyled {
+    list-style: none;
+    padding-left: 0;
 }
 
 textarea {

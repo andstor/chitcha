@@ -9,11 +9,11 @@ var actions = {
     // Handle GET requests from client
     'GET': function(req, res) {
         // if your router needs to pattern-match endpoints
-        var parsedUrl  = url.parse(req.url, true);
-        var endPoint   = parsedUrl.pathname === '/' ? '/index.html' : parsedUrl.pathname;
+        var parsedUrl = url.parse(req.url, true);
+        var endPoint = parsedUrl.pathname === '/' ? '/index.html' : parsedUrl.pathname;
 
-        console.log(parsedUrl);
-        console.log(endPoint);
+        //console.log(parsedUrl);
+        //console.log(endPoint);
 
         /*
         else if(req.method=='GET') {
@@ -28,11 +28,14 @@ var actions = {
         var data;
         var statusCode = 200;
 
-        utils.setHeaderCType(req.url);
+        if (req.url === "/") req.url = '/index.html'; // If no path specified, redirect to 'index.html'
+
         // Serve file
-        function serveFile(callback) {
+        function serveFile(path, callback) {
+            utils.setHeaderCType(path);
+
             // async callback invokes callback with response
-            fs.readFile(__dirname + '/../public' + req.url, 'utf8', function(err, content) {
+            fs.readFile(__dirname + '/../public' + path, 'utf8', function(err, content) {
                 if (err) return callback(err);
 
                 data = content;
@@ -41,8 +44,12 @@ var actions = {
             });
         }
 
-        serveFile(function(err, content) {
-            if (err) throw err;
+
+
+        serveFile(req.url, function(err, content) {
+            if (err) {
+                utils.redirector(res, '404.html', req.url); // Redirect user to '404 not found' page
+            }
             // process the async result
             utils.respond(res, data, statusCode);
         });
@@ -58,10 +65,10 @@ var actions = {
             // e.g., if user wants to save, and save fails, throw error
             if (req.url === "/inbound") {
 
-              console.log("POST method is working!!!");
+                console.log("POST method is working!!!");
 
             } else {
-              utils.send404(res);
+                utils.send404(res);
             }
             utils.redirector(res /* redirect path , optional status code -  defaults to 302 */ );
         });

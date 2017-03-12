@@ -59,8 +59,9 @@ exports.send404 = function(res) {
     exports.respond(res, 'Not Found', 404);
 };
 
-exports.redirector = function(res, loc, status) {
+exports.redirector = function(res, loc, oldUrl, status) {
     status = status || 302;
+    console.log('Redirecting from %s to %s', oldUrl, loc);
     res.writeHead(status, {
         Location: loc
     });

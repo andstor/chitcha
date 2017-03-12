@@ -1,14 +1,15 @@
 function messageHandling() {
-    "use strict";
 
-
-    // my name sent to the server
+    // My name sent to the server
     var myName = false;
 
-    // if user is running mozilla then use it's built-in WebSocket
+    // Whom shall recieve message (KID or "all").
+    var recieverKID = "all";
+
+    // If user is running mozilla then use it's built-in WebSocket
     window.WebSocket = window.WebSocket || window.MozWebSocket;
 
-    // if browser doesn't support WebSocket, just show some notification and exit
+    // If browser doesn't support WebSocket, just show some notification and exit
     if (!window.WebSocket) {
         content.html($('<p>', {
             text: 'Sorry, but your browser doesn\'t ' +
@@ -63,14 +64,16 @@ function messageHandling() {
 
             document.getElementById('username').innerHTML = "@" + json.data + " <span class='light_text'>(you)</span>"; // Show the username
 
-        } else if (json.type === 'clientsList') {
+        } else if (json.type === 'nameList') {
             console.log(json.data);
-            
+            addClientsNames(json);
+
         } else if (json.type === 'history') { // entire message history
             // insert every single message to the chat window
             for (var i = 0; i < json.data.length; i++) {
                 addMessage(json.data[i].author, json.data[i].text, new Date(json.data[i].time));
             }
+
         } else if (json.type === 'message') { // it's a single message
             $('#input').removeAttr('disabled'); // let the user write another message
             addMessage(json.data.author, json.data.text, new Date(json.data.time));
@@ -145,7 +148,6 @@ function messageHandling() {
     });
 
 
-
     /**
      * This method is optional. If the server wasn't able to respond to the
      * in 3 seconds then show some error message to notify the user that
@@ -168,6 +170,21 @@ function messageHandling() {
         updateScroll();
     }
 
+
+    function addClientsNames(json) {
+        $('#clients-list').html("");
+        console.log("lol");
+        for (var j = 0; j < json.data.length; j++) {
+            $('#clients-list').append('<li><a href="' + json.data[j].KID + '">' + json.data[j].name + '</a></li>');
+
+            if (json.data[j].KID === recieverKID) {
+                document.getElementById('clients-list').getElementsByTagName("li")[j].className = "active";
+                console.log("Virker");
+            } else {
+                console.log("virker ikke");
+            }
+        }
+    }
 
     function updateScroll() {
         var element = document.getElementById("msgs_board");
