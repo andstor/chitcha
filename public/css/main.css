@@ -41,13 +41,13 @@ body {
     width: 220px;
     height: 100%;
     float: left;
-    background-color: #4D394B;
+    background-color: #e7ebf3;
 }
 
 #username {
     width: auto;
     margin: auto;
-    color: #fff;
+    color: #000;
 }
 
 .channel-head {
@@ -55,7 +55,7 @@ body {
 }
 
 #all-channels {
-    color: #AB9BA9;
+    color: #61467f;
     width: 100%;
     font-size: .9375rem;
     line-height: 1.375rem;
@@ -84,14 +84,14 @@ body {
 
 #all-channels .active {
     list-style-type: disc;
-    color: #fff;
-    background-color: #4c9689;
+    color: #000;
+    background-color: #96A3B6;
 }
 
 #all-channels .active:hover {
     list-style-type: disc;
     color: #fff;
-    background-color: #4c9689;
+    background-color: #96A3B6;
 }
 
 #all-channels a {
@@ -166,7 +166,7 @@ textarea {
     padding-right: 1.875rem;
     padding-bottom: .625rem;
     padding-left: 1.125rem;
-    border: 2px solid #E0E0E0;
+    border: 2px solid #AB9BA9;
     border-radius: .375rem;
     outline: 0;
     background: #fff;
@@ -181,3 +181,5 @@ textarea {
     -ms-user-select: auto;
     user-select: auto;
 }
+
+/*E0E0E0*/

@@ -175,7 +175,7 @@ function messageHandling() {
         $('#clients-list').html("");
         console.log("lol");
         for (var j = 0; j < json.data.length; j++) {
-            $('#clients-list').append('<li><a href="' + json.data[j].KID + '">' + json.data[j].name + '</a></li>');
+            $('#clients-list').append('<li>' + json.data[j].name + '</li>');
 
             if (json.data[j].KID === recieverKID) {
                 document.getElementById('clients-list').getElementsByTagName("li")[j].className = "active";
