@@ -73,25 +73,24 @@ body {
 }
 
 #all-channels ul li:hover {
-    background-color: #3e313c;
+    background-color: #dae0ec;
 }
 
 #all-channels li:not(.active)>a:hover {
     color: inherit;
-    background-color: #3e313c;
+    background-color: #dae0ec;
     text-decoration: underline;
 }
 
 #all-channels .active {
     list-style-type: disc;
     color: #000;
-    background-color: #96A3B6;
+    background-color: #a5b0c0;
 }
 
 #all-channels .active:hover {
     list-style-type: disc;
-    color: #fff;
-    background-color: #96A3B6;
+    background-color: #a5b0c0;
 }
 
 #all-channels a {
