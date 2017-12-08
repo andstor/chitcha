@@ -25,7 +25,7 @@ Fetch dependencies:
 
 Launch chat server:
     
-    node chatServer.js
+    node server/server.js
 
 Finally, open this URL in your browser:
 
